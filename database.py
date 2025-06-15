@@ -71,7 +71,7 @@ def get_dataframe(query: str, params: tuple = None) -> pd.DataFrame:
         if conn:
             conn.close()
 
-def setup_database_initial():
+def setup_database_initial():  # Fungsi setup dipindah ke sini juga (opsional)
     """Memastikan tabel transaksi ada (dipanggil oleh AnggaranHarian jika perlu)."""
     print(f"Memeriksa/membuat tabel di database (via database.py): {DB_PATH}")
     conn = get_db_connection()
@@ -81,12 +81,9 @@ def setup_database_initial():
         cursor = conn.cursor()
         sql_create_table = """
         CREATE TABLE IF NOT EXISTS transaksi (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            deskripsi TEXT NOT NULL,
-            jumlah REAL NOT NULL CHECK(jumlah > 0),
-            kategori TEXT,
-            tanggal DATE NOT NULL
-        );
+        id INTEGER PRIMARY KEY AUTOINCREMENT, deskripsi TEXT NOT NULL,
+        jumlah REAL NOT NULL CHECK(jumlah > 0), kategori TEXT,
+        tanggal DATE NOT NULL );
         """
         cursor.execute(sql_create_table)
         conn.commit()

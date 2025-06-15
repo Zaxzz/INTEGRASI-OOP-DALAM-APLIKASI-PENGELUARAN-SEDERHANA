@@ -1,3 +1,4 @@
+# model.py
 import datetime
 
 class Transaksi:
@@ -7,7 +8,6 @@ class Transaksi:
                  tanggal: datetime.date | str, id_transaksi: int | None = None):
         self.id = id_transaksi
         self.deskripsi = str(deskripsi) if deskripsi else "Tanpa Deskripsi"
-
         try:
             jumlah_float = float(jumlah)
             self.jumlah = jumlah_float if jumlah_float > 0 else 0.0
@@ -16,9 +16,9 @@ class Transaksi:
         except (ValueError, TypeError):
             self.jumlah = 0.0
             print(f"Peringatan: Jumlah '{jumlah}' tidak valid.")
-
+        
         self.kategori = str(kategori) if kategori else "Lainnya"
-
+        
         if isinstance(tanggal, datetime.date):
             self.tanggal = tanggal
         elif isinstance(tanggal, str):
@@ -34,19 +34,12 @@ class Transaksi:
     def __repr__(self) -> str:
         try:
             import locale
-            locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
+            locale.setlocale(locale.LC_ALL, 'id_ID.UTF8')
             jml_str = locale.format_string("%.0f", self.jumlah, grouping=True)
         except:
             jml_str = f"{self.jumlah:.0f}"
-        return (
-            f"Transaksi(ID:{self.id}, Tgl:{self.tanggal.strftime('%Y-%m-%d')}, "
-            f"Jml:{jml_str}, Kat:'{self.kategori}', Desc:'{self.deskripsi}')"
-        )
+        return f"Transaksi(ID:{self.id}, Tgl:{self.tanggal.strftime('%Y-%m-%d')}, Jml:{jml_str}, Kat:'{self.kategori}', Desc:'{self.deskripsi}')"
 
     def to_dict(self) -> dict:
-        return {
-            "deskripsi": self.deskripsi,
-            "jumlah": self.jumlah,
-            "kategori": self.kategori,
-            "tanggal": self.tanggal.strftime("%Y-%m-%d")
-        }
+        return {"deskripsi": self.deskripsi, "jumlah": self.jumlah,
+                "kategori": self.kategori, "tanggal": self.tanggal.strftime("%Y-%m-%d")}
